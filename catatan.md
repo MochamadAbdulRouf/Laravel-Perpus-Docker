@@ -1,5 +1,4 @@
-Oke Rouf, ini pertanyaan bagus banget 🔥
-`docker-compose.yml`, `Dockerfile`, dan `entrypoint.sh` saling terhubung untuk membentuk **workflow container Laravel**. Aku jelaskan dengan alurnya biar lebih jelas.
+`docker-compose.yml`, `Dockerfile`, dan `entrypoint.sh` saling terhubung untuk membentuk **workflow container Laravel**. 
 
 ---
 
@@ -160,7 +159,7 @@ docker-compose.yml
 User → localhost:8000 → nginx (default.conf) → app:9000 (php-fpm/Laravel) → db
 
 
-👉 Jadi ringkasnya:
+Jadi ringkasnya:
 
 docker-compose.yml → “peta” seluruh service & network.
 
