@@ -1,8 +1,8 @@
-File `default.conf` ini adalah konfigurasi **Nginx** yang dipakai untuk service `nginx` di `docker-compose.yml`. Aku rapikan dulu, lalu jelaskan per baris.
+File `default.conf` ini adalah konfigurasi **Nginx** yang dipakai untuk service `nginx` di `docker-compose.yml`.
 
 ---
 
-### Kode `default.conf` yang sudah dirapikan
+### Kode `default.conf` 
 
 ```nginx
 server {
@@ -151,4 +151,4 @@ location ~ \.php$ {
 
 ---
 
-Mau aku bikinkan **diagram alur request** (visual) supaya lebih gampang memahami hubungan `default.conf` dengan file lain?
+Ai help me for it
