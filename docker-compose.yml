@@ -1,0 +1,47 @@
+version: '3.8' # menentukan versi docker compose yang digunakan
+
+services: #build proses
+  app:
+    build:
+      context: . # Docker akan membangun image dari direktori saat ini
+      dockerfile: Dockerfile # menggunakan Dockerfile yang ada di root project
+    image: img-perpus-app # nama image yang akan dibuat
+    container_name: perpus-app # nama container yang akan di buat
+    restart: unless-stopped # container akan otomatis restart kecuali dihentikan secara manual
+    volumes:
+      - .:/var/www/html #mount project lokal ke container, sehingga update kode langsung tercemin 
+    environment: # variabel environment untuk koneksi database laravel
+      - DB_CONNECTION=mysql # laravel pakai mysql
+      - DB_HOST=db #Host database menunjuk ke service db
+      - DB_PORT=3306 # port default mysql
+      - DB_DATABASE=perpusku_gc # database, username, dan password adalah kredensial database
+      - DB_USERNAME=user 
+      - DB_PASSWORD=secret
+    depends_on:
+      - db # container ini menunggu db jalan dulu
+  
+  # Layanan web server (Nginx)
+  nginx: # menggunakan image nginx versi alpine yang ringan
+    image: nginx:alpine
+    container_name: perpus-nginx # nama container nginx
+    restart: unless-stopped # container akan otomatis restart kecuali dihentikan secara manual
+    ports: # menghubungkan port 80 dalam container ke port 8000 di host
+      - "8000:80" # akses laravel via http://localhost:8000
+    volumes:
+      - .:/var/www/html # sinkronisasi kode laravel dengan nginx
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf # file konfigurasi nginx costum
+    depends_on:
+      - app # tunggu service app sebelum berjalan
+  
+  # Layanan Database (Mysql)
+  db:
+    image: mysql:5.7 # menggunakan mysql versi 5.7
+    container_name: perpus-db # nama container mysql
+    restart: unless-stopped # container akan otomatis restart kecuali dihentikan secara manual
+    environment: 
+      MYSQL_DATABASE: perpusku_gc # nama database
+      MYSQL_USER: user # username untuk laravel
+      MYSQL_PASSWORD: secret # passowrd user database
+      MYSQL_ROOT_PASSWORD: rootsecret # password untuk root 
+    volumes:
+      - ./docker/mysql:/var/lib/mysql # Menyimpan data mysql di host agar tidak hilang saat container stop/restart
